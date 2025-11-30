@@ -358,23 +358,174 @@ Para aplicaciones educativas o de producción:
     └── test_invalidos.txt      # Casos de prueba inválidos
 ```
 
-## 9. Cómo Ejecutar
+## 9. Instalación y Ejecución
 
-### Requisitos
+### 9.1 Verificar Python
+
+Primero, verifica si Python está instalado:
+
 ```bash
-pip install spacy --break-system-packages
-python -m spacy download es_core_news_sm --break-system-packages
+# Windows
+python --version
+
+# Linux/Mac
+python3 --version
 ```
 
-### Ejecutar Parser Manual
+**Resultado esperado:** `Python 3.8.x` o superior. Si no está instalado, descárgalo desde https://www.python.org/downloads/ (Windows/Mac) o instálalo con el gestor de paquetes de tu sistema (Linux).
+
+**Nota importante para Windows:** Durante la instalación, marca la casilla "Add Python to PATH".
+
+### 9.2 Verificar pip
+
 ```bash
+# Windows
+python -m pip --version
+
+# Linux/Mac
+python3 -m pip --version
+```
+
+Si pip no está instalado:
+
+```bash
+# Windows
+python -m ensurepip --upgrade
+
+# Linux (Ubuntu/Debian)
+sudo apt install python3-pip
+
+# Linux (Fedora/RHEL)
+sudo dnf install python3-pip
+
+# Mac
+python3 -m ensurepip --upgrade
+```
+
+### 9.3 Instalar Dependencias (Opcional)
+
+**Nota:** El parser principal funciona sin dependencias externas. Solo necesitas instalar spaCy si quieres ejecutar `comparacion_parsers.py`.
+
+```bash
+# Instalar spaCy
+# Windows
+python -m pip install spacy
+
+# Linux/Mac
+python3 -m pip install spacy
+
+# Si tienes problemas de permisos, usa --user
+python -m pip install --user spacy      # Windows
+python3 -m pip install --user spacy    # Linux/Mac
+```
+
+```bash
+# Descargar modelo en español
+# Windows
+python -m spacy download es_core_news_sm
+
+# Linux/Mac
+python3 -m spacy download es_core_news_sm
+
+# Con --user si es necesario
+python -m spacy download --user es_core_news_sm      # Windows
+python3 -m spacy download --user es_core_news_sm    # Linux/Mac
+```
+
+### 9.4 Verificar Instalación
+
+Ejecuta los tests para verificar que todo funciona:
+
+```bash
+# Windows
+python test_parser.py
+
+# Linux/Mac
+python3 test_parser.py
+```
+
+**Resultado esperado:**
+```
+✓ TODOS LOS TESTS PASARON
+Tests ejecutados: 24
+Tests exitosos: 24
+```
+
+### 9.5 Ejecutar el Proyecto
+
+#### Parser Manual Básico (Sin dependencias)
+```bash
+# Windows
 python mini_parser.py
+
+# Linux/Mac
+python3 mini_parser.py
 ```
 
-### Ejecutar Comparación
+#### Comparación con spaCy (Requiere spaCy instalado)
 ```bash
+# Windows
 python comparacion_parsers.py
+
+# Linux/Mac
+python3 comparacion_parsers.py
 ```
+
+#### Visualizador de Árboles
+```bash
+# Windows
+python visualizador_arbol.py
+
+# Linux/Mac
+python3 visualizador_arbol.py
+```
+
+#### Demo Interactiva
+```bash
+# Windows
+python demo_interactiva.py
+
+# Linux/Mac
+python3 demo_interactiva.py
+```
+
+#### Tests Automatizados
+```bash
+# Windows
+python test_parser.py
+
+# Linux/Mac
+python3 test_parser.py
+```
+
+### 9.7 Solución de Problemas
+
+**"python no se reconoce como comando" (Windows):**
+- Verifica que Python esté instalado y agregado a PATH
+- Reinstala Python marcando "Add Python to PATH"
+
+**"ModuleNotFoundError: No module named 'spacy'":**
+- Instala spaCy: `python -m pip install spacy` (Windows) o `python3 -m pip install spacy` (Linux/Mac)
+
+**"Can't find model 'es_core_news_sm'":**
+- Descarga el modelo: `python -m spacy download es_core_news_sm` (Windows) o `python3 -m spacy download es_core_news_sm` (Linux/Mac)
+
+**"Permission denied" (Linux/Mac):**
+- Usa `--user`: `python3 -m pip install --user spacy`
+
+### 9.8 Requisitos del Sistema
+
+**Mínimos (Solo Parser):**
+- Python 3.8 o superior
+- Sin dependencias externas
+- ~1 MB de espacio en disco
+
+**Completos (Con Comparación spaCy):**
+- Python 3.8 o superior
+- pip (gestor de paquetes)
+- spaCy 3.x
+- Modelo es_core_news_sm (~13 MB)
+- ~50 MB de espacio en disco total
 
 ## 10. Referencias
 
