@@ -3,9 +3,16 @@ Comparación entre Parser Manual vs Modelo NLP Moderno
 Contraste de desempeño: Parser Descendente Recursivo vs spaCy (Deep Learning)
 """
 
+import sys
+import io
 import time
 from typing import List, Dict
 from mini_parser import MiniParser
+
+# Configurar codificación UTF-8 para Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 
 def verificar_dependencias():
@@ -207,13 +214,21 @@ class ComparadorParsers:
         print("ANÁLISIS COMPARATIVO")
         print(f"{'='*80}")
         
-        velocidad_ratio = stats_m['tiempo_total'] / stats_n['tiempo_total']
-        
+        # Evitar división por cero
         print(f"\n⚡ DESEMPEÑO:")
-        if velocidad_ratio < 1:
-            print(f"   • Parser Manual es {1/velocidad_ratio:.2f}x más rápido que spaCy")
+        if stats_n['tiempo_total'] > 0 and stats_m['tiempo_total'] > 0:
+            velocidad_ratio = stats_m['tiempo_total'] / stats_n['tiempo_total']
+            if velocidad_ratio < 1:
+                print(f"   • Parser Manual es {1/velocidad_ratio:.2f}x más rápido que spaCy")
+            else:
+                print(f"   • spaCy es {velocidad_ratio:.2f}x más rápido que Parser Manual")
+        elif stats_m['tiempo_total'] == 0 or stats_m['tiempo_total'] < 0.0001:
+            print(f"   • Parser Manual es extremadamente rápido (tiempo < 0.0001 ms)")
+            print(f"   • spaCy: {stats_n['tiempo_total']:.4f} ms total")
+            if stats_n['tiempo_total'] > 0:
+                print(f"   • Parser Manual es significativamente más rápido que spaCy")
         else:
-            print(f"   • spaCy es {velocidad_ratio:.2f}x más rápido que Parser Manual")
+            print(f"   • No se puede calcular ratio (tiempos muy pequeños o cero)")
         
         print(f"\n🎯 PRECISIÓN:")
         print(f"   • Parser Manual: Verifica gramática formal estricta (SVO con vocabulario limitado)")
